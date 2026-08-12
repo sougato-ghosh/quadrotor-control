@@ -535,7 +535,7 @@ class DroneGUI(QWidget):
             return
 
         if command_matched:
-            self.bridge.log_signal.emit(f"Executing: {command_matched} for {duration}s")
+            self.bridge.log_signal.emit(f"Executing: {command_matched}")
             self.ros_node.publish_twist(linear_x, linear_y, linear_z, angular_z)
             self.voice_stop_timer.start(int(duration * 1000))
 
