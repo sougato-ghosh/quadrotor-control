@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  quadrotor_control:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: quadrotor_voice_control
+    network_mode: host
+    environment:
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
+      - PULSE_SERVER=unix:/run/user/1000/pulse/native
+      # Forces software OpenGL rendering inside Docker if hardware GPU drivers aren't mapped
+      - LIBGL_ALWAYS_SOFTWARE=1
+      # Local offline model search path for Ignition/Gazebo
+      - IGN_GAZEBO_RESOURCE_PATH=/root/.ignition/fuel/fuel.ignitionrobotics.org/openrobotics/models
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - /run/user/1000/pulse/native:/run/user/1000/pulse/native
+      - ${XAUTHORITY:-/root/.Xauthority}:/root/.Xauthority:ro
+    ipc: host
+    privileged: true
+    devices:
+      - /dev/snd:/dev/snd
+      - /dev/dri:/dev/dri  # Pass Direct Rendering Infrastructure for GPU acceleration
+    restart: unless-stopped
