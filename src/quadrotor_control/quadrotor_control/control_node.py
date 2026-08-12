@@ -520,7 +520,7 @@ class DroneGUI(QWidget):
             angular_z = -0.5
             duration = 0.5
             command_matched = "ROTATE RIGHT"
-        elif "left" in text:
+        elif any(w in text for w in ["left", "lift", "l"]):
             linear_y = 0.5
             duration = 0.5
             command_matched = "SLIDE LEFT"
